@@ -22,7 +22,7 @@ void Game::update() {
     lag += (now - prev_counter) / (double)performance_frequency;
     prev_counter = now;
     while (lag >= dt) {
-        world.update();
+        world.update(dt);
         lag -= dt;
     }
 }

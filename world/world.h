@@ -11,7 +11,7 @@ public:
     const std::vector<SDL_FRect>& get_platforms() const;
     bool has_any_collisions(const SDL_FRect& box) const;
     Player* create_player();
-    void update();
+    void update(float dt);
 
 private:
     std::vector<SDL_FRect> platforms;

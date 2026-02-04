@@ -25,7 +25,7 @@ Player* World::create_player() {
     return player.get();
 }
 
-void World::update() {
+void World::update(float dt) {
     //currently updating player
     auto position = player->position;
     auto velocity = player->velocity;
