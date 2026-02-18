@@ -6,7 +6,8 @@ add_library(world
         camera.h camera.cpp
         action.cpp action.h
         game_object.cpp game_object.h
-        fsm.cpp fsm.h)
+        fsm.cpp fsm.h
+        states.cpp states.h)
 
 
 target_include_directories(world PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

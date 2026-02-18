@@ -41,7 +41,7 @@ void GameObject::input(World& world) {
 }
 
 void GameObject::update(World& world, double dt) {
-
+    fsm->current_state->update(world, *this, dt);
 }
 
 std::pair<Vec<float>, Color> GameObject::get_sprite() const {
