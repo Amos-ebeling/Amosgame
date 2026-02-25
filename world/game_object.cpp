@@ -14,24 +14,15 @@ GameObject::~GameObject() {
 
 void GameObject::input(World& world) {
     const bool *key_states = SDL_GetKeyboardState(NULL);
-
-    // if (key_states[SDL_SCANCODE_W]) {
-    //    velocity.y += -32;
-    // }
-    // if (key_states[SDL_SCANCODE_S]) {
-    //     velocity.y += 32;
-    // }
-    // if (key_states[SDL_SCANCODE_A]) {
-    //     // velocity.x += -32;
-    //     physics.acceleration.x += -physics.walk_acceleration;
-    // }
-    // if (key_states[SDL_SCANCODE_D]) {
-    //     //velocity.x += 32;
-    //     physics.acceleration.x += physics.walk_acceleration;
-    // }
     ActionType action_type = ActionType::None;
     if (key_states[SDL_SCANCODE_SPACE]) {
         action_type = ActionType::Jump;
+    }
+    else if (key_states[SDL_SCANCODE_D]) {
+        action_type = ActionType::MoveRight;
+    }
+    else if (key_states[SDL_SCANCODE_A]) {
+        action_type = ActionType::MoveLeft;
     }
     Action* action = fsm->current_state->input(world, *this, action_type);
     if (action != nullptr) {

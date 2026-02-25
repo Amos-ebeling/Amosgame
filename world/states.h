@@ -14,3 +14,9 @@ class InAir:public State {
     const double cooldown = 1;
     double elapsed = 0;
 };
+
+class Running:public State {
+public:
+    void on_enter(World&, GameObject&) override;
+    Action* input(World&, GameObject&, ActionType) override;
+};
