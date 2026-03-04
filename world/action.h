@@ -2,9 +2,10 @@
 
 enum class ActionType {
     None,
-    Jump,
     MoveLeft,
-    MoveRight
+    MoveRight,
+    MoveUp,
+    MoveDown
 };
 
 class World;
@@ -17,14 +18,19 @@ public:
 
 };
 
-class Jump : public Action {
-    void perform(World&, GameObject& obj) override;
-};
 
 class MoveRight : public Action {
     void perform(World& world, GameObject& obj) override;
 };
 
 class MoveLeft : public Action {
+    void perform(World& world, GameObject& obj) override;
+};
+
+class MoveUp : public Action {
+    void perform(World& world, GameObject& obj) override;
+};
+
+class MoveDown : public Action {
     void perform(World& world, GameObject& obj) override;
 };

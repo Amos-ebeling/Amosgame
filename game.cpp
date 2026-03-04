@@ -1,5 +1,8 @@
 #include "game.h"
 
+#include "asset_manager.h"
+#include "input.h"
+
 Game::Game(std::string title, int width, int height)
     :graphics{title, width, height}, world(31, 11),  camera{graphics, 64}, dt{1.0/60.0}, lag{0.0}, performance_frequency({SDL_GetPerformanceFrequency()}), prev_counter{SDL_GetPerformanceCounter()} {
 
@@ -18,9 +21,13 @@ Game::Game(std::string title, int width, int height)
 
 }
 
+void Game::handle_event(SDL_Event* event) {
+    player->input->collect_discrete_event(event);
+}
+
 void Game::input() {
     camera.handle_input();
-    player->input(world);
+    player->input->get_input();
 }
 
 void Game::update() {
@@ -28,6 +35,7 @@ void Game::update() {
     lag += (now - prev_counter) / (float)performance_frequency;
     prev_counter = now;
     while (lag >= dt) {
+        player->input->handle_input(world, *player);
         player->update(world, dt);
         world.update(dt);
         //[ut cam ahead of player

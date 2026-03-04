@@ -1,7 +1,7 @@
 #include "world.h"
 #include <SDL3/SDL_rect.h>
 #include <algorithm>
-
+#include "keyboard_input.h"
 #include "states.h"
 #include "fsm.h"
 #include "game_object.h"
@@ -28,22 +28,21 @@ bool World::collides(const Vec<float>& position) const {
 GameObject* World::create_player() {
     // Create FSM
     Transitions transitions = {
-        {{StateType::Standing, Transition::Jump}, StateType::InAir},
-        {{StateType::InAir, Transition::Stop}, StateType::Standing},
         {{StateType::Standing, Transition::Move}, StateType::Running},
         {{StateType::Running, Transition::Stop}, StateType::Standing},
-        {{StateType::Running, Transition::Jump}, StateType::InAir},
         {{StateType::Running, Transition::Move}, StateType::Running},
 
     };
     States states = {
         {StateType::Standing, new Standing()},
-        {StateType::InAir, new InAir()},
         {StateType::Running, new Running()}
     };
     FSM* fsm = new FSM{transitions, states, StateType::Standing};
 
-    player = std::make_unique<GameObject>(Vec<float> {10, 5}, Vec<int>{1, 1}, *this, fsm, Color {160, 0, 255, 255});
+    //player input
+    Keyboard_Input* input = new Keyboard_Input();
+
+    player = std::make_unique<GameObject>(Vec<float> {10, 5}, Vec<int>{1, 1}, *this, fsm, input, Color {160, 0, 255, 255});
     return player.get();
 }
 
@@ -136,6 +135,7 @@ void World::update(float dt) {
     position += velocity * dt;
     velocity += 0.5f * acceleration * dt;
     velocity.x *= player->physics.damping;
+    velocity.y *= player->physics.damping;
 
     velocity.x = std::clamp(velocity.x, -player->physics.terminal_velocity, player->physics.terminal_velocity);
     velocity.y = std::clamp(velocity.y, -player->physics.terminal_velocity, player->physics.terminal_velocity);

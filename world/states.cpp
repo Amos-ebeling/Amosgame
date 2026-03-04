@@ -16,13 +16,10 @@ bool on_platform(World& world, GameObject& obj) {
 void Standing::on_enter(World&, GameObject& obj) {
     obj.color = {160, 0, 255, 255};
     obj.physics.acceleration.x = 0;
+    obj.physics.acceleration.y = 0;
 }
 
 Action* Standing::input(World& world, GameObject& obj, ActionType action_type) {
-    if (action_type == ActionType::Jump) {
-        obj.fsm->transition(Transition::Jump, world, obj);
-        return new Jump();
-    }
     if (action_type == ActionType::MoveLeft) {
         obj.fsm->transition(Transition::Move, world, obj);
         return new MoveLeft();
@@ -30,6 +27,14 @@ Action* Standing::input(World& world, GameObject& obj, ActionType action_type) {
     if (action_type == ActionType::MoveRight) {
         obj.fsm->transition(Transition::Move, world, obj);
         return new MoveRight();
+    }
+    if (action_type == ActionType::MoveDown) {
+        obj.fsm->transition(Transition::Move, world, obj);
+        return new MoveDown();
+    }
+    if (action_type == ActionType::MoveUp) {
+        obj.fsm->transition(Transition::Move, world, obj);
+        return new MoveUp();
     }
     return nullptr;
 }
@@ -54,10 +59,6 @@ Action* Running::input(World& world, GameObject& obj, ActionType action_type) {
     if (action_type == ActionType::None) {
         obj.fsm->transition(Transition::Stop, world, obj);
     }
-    else if (action_type == ActionType::Jump) {
-        obj.fsm->transition(Transition::Jump, world, obj);
-        return new Jump();
-    }
     if (action_type == ActionType::MoveLeft) {
         obj.fsm->transition(Transition::Move, world, obj);
         return new MoveLeft();
@@ -65,6 +66,14 @@ Action* Running::input(World& world, GameObject& obj, ActionType action_type) {
     if (action_type == ActionType::MoveRight) {
         obj.fsm->transition(Transition::Move, world, obj);
         return new MoveRight();
+    }
+    if (action_type == ActionType::MoveUp) {
+        obj.fsm->transition(Transition::Move, world, obj);
+        return new MoveUp();
+    }
+    if (action_type == ActionType::MoveDown) {
+        obj.fsm->transition(Transition::Move, world, obj);
+        return new MoveDown();
     }
     return nullptr;
 }
