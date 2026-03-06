@@ -16,7 +16,9 @@ Game::Game(std::string title, int width, int height)
     //platforms
     world.add_platform(3, 7, 4, 1);
     world.add_platform(13, 4, 6, 1);
+
     player = world.create_player();
+    player->sprite = AssetManager::get_game_object_sprite("player", graphics);
     camera.set_location(player->physics.position);
 
 }
@@ -53,8 +55,7 @@ void Game::render() {
     camera.render(world.tilemap);
 
     //draw player
-    auto[player_position, color] = player->get_sprite();
-    camera.render(player_position, color);
+    camera.render(*player);
 
 
     graphics.update();
