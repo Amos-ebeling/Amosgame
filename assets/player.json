@@ -1,8 +1,39 @@
 {
-  "idle" : {
-    "filename" : "Sheep.png",
-    "location" : [0,0],
-    "size" : [32, 32],
-    "scale" : 2
+  "sprites": [
+    {
+      "name" : "idle",
+      "filename" : "Player_idle.png",
+      "location" : [0,0],
+      "size" : [32, 32],
+      "scale" : 2,
+      "number_of_frames" : 7,
+      "dt_per_frame" : 0.1
+    },
+    {
+      "name" : "walking_left",
+      "filename" : "Player_walking_left.png",
+      "location" : [0,0],
+      "size" : [32, 32],
+      "scale" : 2,
+      "number_of_frames" : 4,
+      "dt_per_frame" : 0.1
+    },
+    {
+      "name" : "walking_right",
+      "filename" : "Player_walking_right.png",
+      "location" : [0,0],
+      "size" : [32, 32],
+      "scale" : 2,
+      "number_of_frames" : 4,
+      "dt_per_frame" : 0.1
+    }
+  ],
+  "physics" : {
+    "position" : [10, 5],
+    "velocity" : [0,0],
+    "acceleration": [0, -30],
+    "damping" : 0.9,
+    "walk_acceleration": 60.0,
+    "terminal_velocity" : 30.0
   }
 }

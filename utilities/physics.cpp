@@ -4,6 +4,6 @@ Physics::Physics(Vec<float> position, Vec<float> velocity, Vec<float> accelerati
     :position{position}, velocity{velocity}, acceleration{acceleration}{
 }
 
-Physics::Physics(Vec<float> position, Vec<float> velocity, Vec<float> acceleration, float gravity, float damping, float walk_acceleration, float jump_velocity, float terminal_velocity)
-    :position{position}, velocity{velocity}, acceleration{acceleration}, gravity{gravity}, damping{damping}, walk_acceleration{walk_acceleration}, jump_velocity{jump_velocity}, terminal_velocity{terminal_velocity}{
+Physics::Physics(Vec<float> position, Vec<float> velocity, Vec<float> acceleration, float damping, float walk_acceleration, float terminal_velocity)
+    :position{position}, velocity{velocity}, acceleration{acceleration}, damping{damping}, walk_acceleration{walk_acceleration}, terminal_velocity{terminal_velocity}{
 }

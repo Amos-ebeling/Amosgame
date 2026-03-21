@@ -92,6 +92,8 @@ void Camera::render(const Vec<float>& position, const Sprite& sprite) const {
 }
 
 void Camera::render(const GameObject& obj) const {
-    render(obj.physics.position, obj.color);
+    if (grid_toggle.on) {
+        render(obj.physics.position, obj.color);
+    }
     render(obj.physics.position, obj.sprite);
 }

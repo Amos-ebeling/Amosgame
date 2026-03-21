@@ -1,5 +1,5 @@
 #include "game.h"
-
+#include "fsm.h"
 #include "asset_manager.h"
 #include "input.h"
 
@@ -18,7 +18,9 @@ Game::Game(std::string title, int width, int height)
     world.add_platform(13, 4, 6, 1);
 
     player = world.create_player();
-    player->sprite = AssetManager::get_game_object_sprite("player", graphics);
+    AssetManager::get_game_object_details("player", graphics, *player);
+    player->fsm->current_state->on_enter(world, *player);
+
     camera.set_location(player->physics.position);
 
 }

@@ -3,6 +3,9 @@
 #include <SDL3/SDL.h>
 #include "vec.h"
 #include "sprite.h"
+#include <unordered_map>
+#include <vector>
+
 
 class Color {
 public:
@@ -11,19 +14,20 @@ public:
 };
 class Graphics {
 public:
-    Graphics(const std::string& title, int window_width, int window_height);
+    Graphics(std::string title, int width, int height);
     void clear();
     void update();
+    void set_title(const std::string& title);
 
     void draw(const SDL_FRect& rect, const Color& color, bool filled = true);
     void draw_sprite(const Vec<float>& pixel, const Sprite& Sprite);
 
     int get_texture_id(const std::string& image_filename);
 
-    const int width, height;
+    const int width;
+    const int height;
 
 private:
-    std::string title;
     SDL_Window* window;
     SDL_Renderer* renderer;
     std::vector<SDL_Texture*> textures;

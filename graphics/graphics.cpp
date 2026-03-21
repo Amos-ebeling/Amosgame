@@ -1,8 +1,11 @@
 #include "graphics.h"
+#include <stdexcept>
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_surface.h>
 
-Graphics::Graphics(const std::string& title, int window_width, int window_height)
-    : title{title}, width{window_width}, height{window_height} {
-
+Graphics::Graphics(std::string title, int width, int height)
+    :width{width}, height{height} {
+    //set up window/renderer
     SDL_SetAppMetadata(title.data(), "1.0", NULL);
     if (!SDL_CreateWindowAndRenderer(title.data(), width, height, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
@@ -13,7 +16,7 @@ Graphics::Graphics(const std::string& title, int window_width, int window_height
 
 
 void Graphics::clear() {
-    SDL_SetRenderDrawColor(renderer, 150, 0, 255, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 }
 
@@ -32,6 +35,10 @@ void Graphics::update() {
     SDL_RenderPresent(renderer);
 }
 
+void Graphics::set_title(const std::string &title) {
+    SDL_SetWindowTitle(window, title.c_str());
+}
+
 int Graphics::get_texture_id(const std::string& image_filename) {
     auto search = texture_ids.find(image_filename);
     if (search != texture_ids.end()) {
@@ -46,6 +53,7 @@ int Graphics::get_texture_id(const std::string& image_filename) {
         if (!texture) {
             throw std::runtime_error(SDL_GetError());
         }
+        //register new texture
         int texture_id = textures.size();
         texture_ids[image_filename] = texture_id;
         //retain ownership of the texture pointer
