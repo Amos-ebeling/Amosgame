@@ -5,16 +5,19 @@
 #include "states.h"
 #include "fsm.h"
 #include "game_object.h"
+#include "level.h"
 #include "vec.h"
 #include "physics.h"
 
-World::World(int width, int height)
-    :tilemap{width, height}{}
+World::World(const Level& level)
+    :tilemap(level.width, level.height){
+    load_level(level);
+}
 
 void World::add_platform(float x, float y, float width, float height) {
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
-            tilemap(x+j, y+i) = Tile::Platform;
+            tilemap(x+j, y+i) = Tile{};
         }
     }
 }
@@ -22,10 +25,10 @@ void World::add_platform(float x, float y, float width, float height) {
 bool World::collides(const Vec<float>& position) const {
     int x = std::floor(position.x);
     int y = std::floor(position.y);
-    return tilemap(x,y) == Tile::Platform;
+    return tilemap(x,y).blocking;
 }
 
-GameObject* World::create_player() {
+GameObject* World::create_player(const Level& level) {
     // Create FSM
     Transitions transitions = {
         {{StateType::Standing, Transition::Move}, StateType::Running},
@@ -42,8 +45,8 @@ GameObject* World::create_player() {
     //player input
     Keyboard_Input* input = new Keyboard_Input();
 
-    player = std::make_unique<GameObject>(Vec<int> {1, 1}, *this, fsm, input, Color {160, 0, 255, 255});
-    return player.get();
+    player = new GameObject({1,1}, *this, fsm, input, Color {160, 0, 255, 255});
+    return player;
 }
 
 void World::move_to(Vec<float>& position, const Vec<int>& size, Vec<float>& velocity) {
@@ -152,4 +155,10 @@ void World::update(float dt) {
     // update the player position and velocity
     player->physics.position = future_position;
     player->physics.velocity = future_veloctiy;
+}
+
+void World::load_level(const Level& level) {
+    for (const auto& [pos, tile_id] : level.tile_locations) {
+        tilemap(pos.x, pos.y) = level.tile_types.at(tile_id);
+    }
 }

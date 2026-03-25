@@ -1,0 +1,133 @@
+{
+  "tiles": [
+    {
+      "sprite": {
+        "name": "grass",
+        "filename": "Level_tiles.png",
+        "location": [0, 0],
+        "size": [32, 32],
+        "scale": 2,
+        "number_of_frames": 1,
+        "dt_per_frame": -1
+    },
+    "blocking": false,
+    "event_name": ""
+    },
+    {
+      "sprite": {
+        "name": "tree",
+        "filename": "Level_tiles.png",
+        "location": [32, 0],
+        "size": [32, 32],
+        "scale": 2,
+        "number_of_frames": 1,
+        "dt_per_frame": -1
+    },
+    "blocking": false,
+    "event_name": ""
+    },
+    {
+      "sprite": {
+        "name": "top_left_corner",
+        "filename": "Level_tiles.png",
+        "location": [64, 0],
+        "size": [32, 32],
+        "scale": 2,
+        "number_of_frames": 1,
+        "dt_per_frame": -1
+    },
+    "blocking": true,
+    "event_name": ""
+    },
+    {
+      "sprite": {
+        "name": "bottom_left_corner",
+        "filename": "Level_tiles.png",
+        "location": [0, 32],
+        "size": [32, 32],
+        "scale": 2,
+        "number_of_frames": 1,
+        "dt_per_frame": -1
+    },
+    "blocking": true,
+    "event_name": ""
+    },
+    {
+      "sprite": {
+        "name": "top_right_corner",
+        "filename": "Level_tiles.png",
+        "location": [32, 32],
+        "size": [32, 32],
+        "scale": 2,
+        "number_of_frames": 1,
+        "dt_per_frame": -1
+    },
+    "blocking": true,
+    "event_name": ""
+    },
+    {
+      "sprite": {
+        "name": "vertical",
+        "filename": "Level_tiles.png",
+        "location": [64, 32],
+        "size": [32, 32],
+        "scale": 2,
+        "number_of_frames": 1,
+        "dt_per_frame": -1
+    },
+    "blocking": true,
+    "event_name": ""
+    },
+    {
+      "sprite": {
+        "name": "vertical_fence",
+        "filename": "Level_tiles.png",
+        "location": [0, 64],
+        "size": [32, 32],
+        "scale": 2,
+        "number_of_frames": 1,
+        "dt_per_frame": -1
+    },
+    "blocking": true,
+    "event_name": ""
+    },
+    {
+      "sprite": {
+        "name": "bottom_right_corner",
+        "filename": "Level_tiles.png",
+        "location": [32, 64],
+        "size": [32, 32],
+        "scale": 2,
+        "number_of_frames": 1,
+        "dt_per_frame": -1
+    },
+    "blocking": true,
+    "event_name": ""
+    },
+    {
+      "sprite": {
+        "name": "horizontal",
+        "filename": "Level_tiles.png",
+        "location": [64, 64],
+        "size": [32, 32],
+        "scale": 2,
+        "number_of_frames": 1,
+        "dt_per_frame": -1
+    },
+    "blocking": true,
+    "event_name": ""
+    },
+    { "sprite": {
+        "name": "shrubs",
+        "filename": "Level_tiles.png",
+        "location": [0, 96],
+        "size": [32, 32],
+        "scale": 2,
+        "number_of_frames": 1,
+        "dt_per_frame": -1
+    },
+    "blocking": false,
+    "event_name": ""
+    }
+  ]
+}

@@ -6,6 +6,7 @@
 Camera::Camera(Graphics& graphics, float tilesize)
     :graphics{graphics}, tilesize{tilesize}, physics{location, {0.0}, {0,0}} {
     calculate_visible_tiles();
+    physics.damping = .9;
 }
 
 void Camera::calculate_visible_tiles() {
@@ -71,11 +72,11 @@ void Camera::render(const Tilemap& tilemap) const {
             const Tile& tile = tilemap(x,y);
             Vec<float> position{static_cast<float>(x), static_cast<float>(y)};
 
-            if (tile == Tile::Platform) {
-                render(position, {0, 255, 0, 255});
+            if (tile.blocking) {
+                render(position, tile.sprite);
             }
             else {
-                render(position, {0, 127, 127, 255});
+                render(position, tile.sprite);
             }
             if (grid_toggle.on) {
                 render(position, {0,0,0,0}, false);
