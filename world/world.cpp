@@ -1,5 +1,6 @@
 #include "world.h"
 #include <SDL3/SDL_rect.h>
+#include <iostream>
 #include <algorithm>
 #include "keyboard_input.h"
 #include "states.h"
@@ -9,8 +10,8 @@
 #include "vec.h"
 #include "physics.h"
 
-World::World(const Level& level)
-    :tilemap(level.width, level.height){
+World::World(const Level& level, Audio& audio, GameObject* player, Events& events)
+    :tilemap{level.width, level.height}, audio{&audio}, player{player}, events{events}{
     load_level(level);
 }
 
@@ -45,7 +46,7 @@ GameObject* World::create_player(const Level& level) {
     //player input
     Keyboard_Input* input = new Keyboard_Input();
 
-    player = new GameObject({1,1}, *this, fsm, input, Color {160, 0, 255, 255});
+    player = new GameObject({1,1}, fsm, input, Color {160, 0, 255, 255});
     return player;
 }
 
@@ -155,10 +156,28 @@ void World::update(float dt) {
     // update the player position and velocity
     player->physics.position = future_position;
     player->physics.velocity = future_veloctiy;
+    touch_tiles(*player);
 }
 
 void World::load_level(const Level& level) {
     for (const auto& [pos, tile_id] : level.tile_locations) {
         tilemap(pos.x, pos.y) = level.tile_types.at(tile_id);
+    }
+    audio->load_sounds({});
+}
+
+void World::touch_tiles(GameObject& obj) {
+    int x = std::floor(obj.physics.position.x);
+    int y = std::floor(obj.physics.position.y);
+    const std::vector<Vec<int>> displacements{{0,0}, {obj.size.x, 0},{0, obj.size.y}, {obj.size.x, obj.size.y}};
+    for (const auto& displacement : displacements) {
+        Tile& tile = tilemap(x + displacement.x, y + displacement.y);
+        if (!tile.event_name.empty()) {
+            auto itr = events.find(tile.event_name);
+            if (itr == events.end()) {
+                throw std::runtime_error("Cannot find event: " + tile.event_name);
+            }
+            itr->second->perform(*this, obj);
+        }
     }
 }

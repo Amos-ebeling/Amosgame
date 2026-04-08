@@ -42,12 +42,7 @@ Action* Standing::input(World& world, GameObject& obj, ActionType action_type) {
 
 void Running::on_enter(World&, GameObject& obj) {
     obj.color = {255, 255, 0, 255};
-    if (obj.physics.velocity.x > 0) {
-        obj.set_sprite("walking_right");
-    }
-    if (obj.physics.velocity.x <= 0) {
-        obj.set_sprite("walking_left");
-    }
+    obj.set_sprite("walking_left");
 }
 
 Action* Running::input(World& world, GameObject& obj, ActionType action_type) {

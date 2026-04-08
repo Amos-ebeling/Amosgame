@@ -48,27 +48,6 @@
                 2,
                 7
             ],
-            "tile": "level_tiles.json:vertical"
-        },
-        {
-            "pos": [
-                2,
-                8
-            ],
-            "tile": "level_tiles.json:vertical"
-        },
-        {
-            "pos": [
-                2,
-                9
-            ],
-            "tile": "level_tiles.json:vertical"
-        },
-        {
-            "pos": [
-                2,
-                10
-            ],
             "tile": "level_tiles.json:top_left_corner"
         },
         {
@@ -111,35 +90,28 @@
                 3,
                 7
             ],
-            "tile": "level_tiles.json:grass"
-        },
-        {
-            "pos": [
-                3,
-                8
-            ],
-            "tile": "level_tiles.json:grass"
-        },
-        {
-            "pos": [
-                3,
-                9
-            ],
-            "tile": "level_tiles.json:grass"
-        },
-        {
-            "pos": [
-                3,
-                10
-            ],
             "tile": "level_tiles.json:horizontal"
+        },
+        {
+            "pos": [
+                4,
+                0
+            ],
+            "tile": "level_tiles.json:bottom_left_corner"
+        },
+        {
+            "pos": [
+                4,
+                1
+            ],
+            "tile": "level_tiles.json:vertical"
         },
         {
             "pos": [
                 4,
                 2
             ],
-            "tile": "level_tiles.json:horizontal"
+            "tile": "level_tiles.json:top_right_corner"
         },
         {
             "pos": [
@@ -174,35 +146,28 @@
                 4,
                 7
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:horizontal"
         },
         {
             "pos": [
-                4,
-                8
-            ],
-            "tile": "level_tiles.json:grass"
-        },
-        {
-            "pos": [
-                4,
-                9
-            ],
-            "tile": "level_tiles.json:grass"
-        },
-        {
-            "pos": [
-                4,
-                10
+                5,
+                0
             ],
             "tile": "level_tiles.json:horizontal"
         },
         {
             "pos": [
                 5,
+                1
+            ],
+            "tile": "level_tiles.json:grass"
+        },
+        {
+            "pos": [
+                5,
                 2
             ],
-            "tile": "level_tiles.json:horizontal"
+            "tile": "level_tiles.json:grass"
         },
         {
             "pos": [
@@ -237,35 +202,28 @@
                 5,
                 7
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:horizontal"
         },
         {
             "pos": [
-                5,
-                8
-            ],
-            "tile": "level_tiles.json:grass"
-        },
-        {
-            "pos": [
-                5,
-                9
-            ],
-            "tile": "level_tiles.json:grass"
-        },
-        {
-            "pos": [
-                5,
-                10
+                6,
+                0
             ],
             "tile": "level_tiles.json:horizontal"
         },
         {
             "pos": [
                 6,
+                1
+            ],
+            "tile": "level_tiles.json:grass"
+        },
+        {
+            "pos": [
+                6,
                 2
             ],
-            "tile": "level_tiles.json:horizontal"
+            "tile": "level_tiles.json:tree"
         },
         {
             "pos": [
@@ -300,35 +258,28 @@
                 6,
                 7
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:horizontal"
         },
         {
             "pos": [
-                6,
-                8
-            ],
-            "tile": "level_tiles.json:shrubs"
-        },
-        {
-            "pos": [
-                6,
-                9
-            ],
-            "tile": "level_tiles.json:grass"
-        },
-        {
-            "pos": [
-                6,
-                10
+                7,
+                0
             ],
             "tile": "level_tiles.json:horizontal"
         },
         {
             "pos": [
                 7,
+                1
+            ],
+            "tile": "level_tiles.json:grass"
+        },
+        {
+            "pos": [
+                7,
                 2
             ],
-            "tile": "level_tiles.json:horizontal"
+            "tile": "level_tiles.json:grass"
         },
         {
             "pos": [
@@ -362,90 +313,174 @@
             "pos": [
                 7,
                 7
-            ],
-            "tile": "level_tiles.json:grass"
-        },
-        {
-            "pos": [
-                7,
-                8
-            ],
-            "tile": "level_tiles.json:grass"
-        },
-        {
-            "pos": [
-                7,
-                9
-            ],
-            "tile": "level_tiles.json:grass"
-        },
-        {
-            "pos": [
-                7,
-                10
             ],
             "tile": "level_tiles.json:horizontal"
         },
         {
             "pos": [
                 8,
+                0
+            ],
+            "tile": "level_tiles.json:horizontal"
+        },
+        {
+            "pos": [
+                8,
+                1
+            ],
+            "tile": "level_tiles.json:grass"
+        },
+        {
+            "pos": [
+                8,
                 2
+            ],
+            "tile": "level_tiles.json:grass"
+        },
+        {
+            "pos": [
+                8,
+                3
+            ],
+            "tile": "level_tiles.json:grass"
+        },
+        {
+            "pos": [
+                8,
+                4
+            ],
+            "tile": "level_tiles.json:grass"
+        },
+        {
+            "pos": [
+                8,
+                5
+            ],
+            "tile": "level_tiles.json:bottom_left_corner"
+        },
+        {
+            "pos": [
+                8,
+                6
+            ],
+            "tile": "level_tiles.json:vertical"
+        },
+        {
+            "pos": [
+                8,
+                7
+            ],
+            "tile": "level_tiles.json:top_right_corner"
+        },
+        {
+            "pos": [
+                9,
+                0
+            ],
+            "tile": "level_tiles.json:horizontal"
+        },
+        {
+            "pos": [
+                9,
+                1
+            ],
+            "tile": "level_tiles.json:grass"
+        },
+        {
+            "pos": [
+                9,
+                2
+            ],
+            "tile": "level_tiles.json:tree"
+        },
+        {
+            "pos": [
+                9,
+                3
+            ],
+            "tile": "level_tiles.json:grass"
+        },
+        {
+            "pos": [
+                9,
+                4
+            ],
+            "tile": "level_tiles.json:bottom_left_corner"
+        },
+        {
+            "pos": [
+                9,
+                5
+            ],
+            "tile": "level_tiles.json:top_right_corner"
+        },
+        {
+            "pos": [
+                10,
+                0
+            ],
+            "tile": "level_tiles.json:horizontal"
+        },
+        {
+            "pos": [
+                10,
+                1
+            ],
+            "tile": "level_tiles.json:grass"
+        },
+        {
+            "pos": [
+                10,
+                2
+            ],
+            "tile": "level_tiles.json:grass"
+        },
+        {
+            "pos": [
+                10,
+                3
+            ],
+            "tile": "level_tiles.json:grass"
+        },
+        {
+            "pos": [
+                10,
+                4
+            ],
+            "tile": "level_tiles.json:horizontal"
+        },
+        {
+            "pos": [
+                11,
+                0
             ],
             "tile": "level_tiles.json:bottom_right_corner"
         },
         {
             "pos": [
-                8,
+                11,
+                1
+            ],
+            "tile": "level_tiles.json:vertical"
+        },
+        {
+            "pos": [
+                11,
+                2
+            ],
+            "tile": "level_tiles.json:vertical"
+        },
+        {
+            "pos": [
+                11,
                 3
             ],
-            "tile": "level_tiles.json:vertical_fence"
+            "tile": "level_tiles.json:vertical"
         },
         {
             "pos": [
-                8,
+                11,
                 4
-            ],
-            "tile": "level_tiles.json:vertical"
-        },
-        {
-            "pos": [
-                8,
-                5
-            ],
-            "tile": "level_tiles.json:vertical"
-        },
-        {
-            "pos": [
-                8,
-                6
-            ],
-            "tile": "level_tiles.json:vertical"
-        },
-        {
-            "pos": [
-                8,
-                7
-            ],
-            "tile": "level_tiles.json:vertical"
-        },
-        {
-            "pos": [
-                8,
-                8
-            ],
-            "tile": "level_tiles.json:vertical"
-        },
-        {
-            "pos": [
-                8,
-                9
-            ],
-            "tile": "level_tiles.json:vertical"
-        },
-        {
-            "pos": [
-                8,
-                10
             ],
             "tile": "level_tiles.json:top_right_corner"
         }
