@@ -31,9 +31,13 @@
   "physics" : {
     "position" : [10, 5],
     "velocity" : [0,0],
-    "acceleration": [0, -30],
+    "acceleration": [0, 0],
     "damping" : 0.9,
-    "walk_acceleration": 60.0,
+    "walk_acceleration": 20.0,
     "terminal_velocity" : 30.0
-  }
+  },
+  "size" : [1,1],
+  "health" : 100,
+  "max_health" : 10,
+  "damage" : 2
 }

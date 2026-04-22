@@ -142,6 +142,11 @@ void LevelDesigner::render() {
                 if (level.player_spawn_location.x == tilemap_x && level.player_spawn_location.y == tilemap_y) {
                     graphics.draw(rect, {255, 0, 255, 100}, true);
                 }
+
+                // draw transparent yellow if exists enemy
+                if (level.enemy_locations.contains({static_cast<float>(tilemap_x), static_cast<float>(tilemap_y)})) {
+                    graphics.draw(rect, {255, 222, 33, 100});
+                }
             }
         }
     }
@@ -197,3 +202,8 @@ void LevelDesigner::save() {
 void LevelDesigner::place_player() {
     level.player_spawn_location = selected_tile;
 }
+
+void LevelDesigner::place_enemy(std::string enemy_name) {
+    level.enemy_locations[{static_cast<float>(selected_tile.x), static_cast<float>(selected_tile.y)}] = enemy_name;
+}
+

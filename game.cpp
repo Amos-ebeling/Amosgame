@@ -10,32 +10,12 @@ Game::Game(std::string title, int width, int height)
     //load events
     get_events();
 
-    // load the first level
-    Level level{"level_1"};
-    AssetManager::get_level_details(graphics, level);
-
-    //give player
+      //give player
     create_player();
     AssetManager::get_game_object_details("player", graphics, *player);
 
-    // create the world for the first level
-    world = new World(level, audio, player.get(), events);
-
-    // Give player its assets then put it in the correct state
-    player = std::unique_ptr<GameObject>(world->create_player(level));
-    AssetManager::get_game_object_details("player", graphics, *player);
-    player->fsm->current_state->on_enter(*world, *player);
-
-    // use the spawn location's position
-    player->physics.position = {
-        static_cast<float>(level.player_spawn_location.x),
-        static_cast<float>(level.player_spawn_location.y)
-    };
-
-    player->fsm->current_state->on_enter(*world, *player);
-
-    camera.set_location(player->physics.position);
-    audio.play_sounds("background", true);
+    //Load first level
+    load_level();
 }
 
 Game::~Game() {
@@ -46,12 +26,20 @@ Game::~Game() {
 }
 
 void Game::handle_event(SDL_Event* event) {
-    player->input->collect_discrete_event(event);
+    switch (mode) {
+        case GameMode::Playing:
+            player->input->collect_discrete_event(event);
+            break;
+    }
 }
 
 void Game::input() {
-    camera.handle_input();
-    player->input->get_input();
+    switch (mode){
+        case GameMode::Playing:
+            camera.handle_input();
+            player->input->get_input();
+            break;
+    }
 }
 
 void Game::update() {
@@ -59,17 +47,20 @@ void Game::update() {
     lag += (now - prev_counter) / (float)performance_frequency;
     prev_counter = now;
     while (lag >= dt) {
-        player->input->handle_input(*world, *player);
-        player->update(*world, dt);
-        world->update(dt);
-        //[ut cam ahead of player
-        float L = length(player->physics.velocity);
-        Vec displacement = 8.0f * player->physics.velocity/(1.0f+L);
-        camera.update(player->physics.position+displacement, dt);
-        lag -= dt;
-        if (world->end_level) {
-            load_level();
+        switch (mode) {
+            case GameMode::Playing:
+                player->input->handle_input(*world, *player);
+                world->update(dt);
+                //[ut cam ahead of player
+                float L = length(player->physics.velocity);
+                Vec displacement = 8.0f * player->physics.velocity/(1.0f+L);
+                camera.update(player->physics.position+displacement, dt);
+                if (world->end_level) {
+                    load_level();
+                }
+                break;
         }
+        lag -= dt;
     }
 }
 
@@ -82,6 +73,10 @@ void Game::render() {
     //draw player
     camera.render(*player);
 
+    //enemies
+    for (auto& obj : world->game_objects) {
+        camera.render(*obj);
+    }
 
     graphics.update();
 }
@@ -100,7 +95,14 @@ void Game::load_level() {
     delete world;
     world = new World(level, audio, player.get(), events);
 
+    //asset for obj
+    for (auto& obj : world->game_objects) {
+        if (obj == world->player) continue;
+        AssetManager::get_game_object_details(obj->obj_name + "-enemy", graphics, *obj);
+    }
+
     player->physics.position = {static_cast<float>(level.player_spawn_location.x), static_cast<float>(level.player_spawn_location.y)};
+    player->fsm->current_state->on_enter(*world, *player);
     camera.set_location(player->physics.position);
     audio.play_sounds("background", true);
 }
@@ -111,16 +113,18 @@ void Game::create_player() {
         {{StateType::Standing, Transition::Move}, StateType::Running},
         {{StateType::Running, Transition::Stop}, StateType::Standing},
         {{StateType::Running, Transition::Move}, StateType::Running},
+        {{StateType::AttackAllEnemies, Transition::Stop}, StateType::Standing}
     };
     States states = {
         {StateType::Standing, new Standing()},
-        {StateType::Running, new Running()}
+        {StateType::Running, new Running()},
+        {StateType::AttackAllEnemies, new AttackAllEnemies()}
     };
     FSM* fsm = new FSM{transitions, states, StateType::Standing};
 
     //player input
     Keyboard_Input* input = new Keyboard_Input();
 
-    player = std::make_unique<GameObject>(Vec<int>{1,1}, fsm, input, Color {160, 0, 255, 255});
+    player = std::make_unique<GameObject>("player", fsm, input, Color {160, 0, 255, 255});
 }
 

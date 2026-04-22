@@ -7,6 +7,7 @@
 #include "game_object.h"
 #include "audio.h"
 #include "events.h"
+#include "quadtree.h"
 
 class Level;
 class Audio;
@@ -15,7 +16,7 @@ class GameObject;
 class World {
 public:
     World(const Level& level, Audio& audio, GameObject* player, Events& events);
-
+    ~World();
     void add_platform(float x, float y, float width, float height);
     bool collides(const Vec<float>& position) const;
     GameObject* create_player(const Level& level);
@@ -25,11 +26,16 @@ public:
 
     Tilemap tilemap;
     bool end_level{false};
+    bool end_game{false};
 
-private:
+
+    void build_quadtree();
+
     GameObject* player;
     Audio* audio;
     Events events;
-
+    std::vector<GameObject*> game_objects;
     void touch_tiles(GameObject& obj);
+
+    QuadTree quad_tree;
 };

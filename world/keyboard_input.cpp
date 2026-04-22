@@ -7,6 +7,7 @@
 
 
 void Keyboard_Input::get_input() {
+    if (next_action_type == ActionType::AttackAll) return;
     const bool *key_states = SDL_GetKeyboardState(NULL);
 
     if (key_states[SDL_SCANCODE_D]) {
@@ -33,6 +34,9 @@ void Keyboard_Input::handle_input(World& world, GameObject& obj) {
 }
 
 void Keyboard_Input::collect_discrete_event(SDL_Event* event) {
-    if (event->type == SDL_EVENT_KEY_DOWN && event->key.repeat == 0) {
+    if (event->type == SDL_EVENT_KEY_DOWN && event->key.repeat == 0){
+        if (event->key.scancode == SDL_SCANCODE_M) {
+            next_action_type = ActionType::AttackAll;
+        }
     }
 }

@@ -11,8 +11,15 @@
 #include "physics.h"
 
 World::World(const Level& level, Audio& audio, GameObject* player, Events& events)
-    :tilemap{level.width, level.height}, audio{&audio}, player{player}, events{events}{
+    :tilemap{level.width, level.height}, audio{&audio}, player{player}, events{events}, quad_tree{AABB{{level.width/2.0f, level.height/2.0f}, {level.width/2.0f, level.height/2.0f}}}{
     load_level(level);
+}
+
+World::~World() {
+    for (auto obj : game_objects) {
+        if (obj==player) continue;
+        delete obj;
+    }
 }
 
 void World::add_platform(float x, float y, float width, float height) {
@@ -29,149 +36,167 @@ bool World::collides(const Vec<float>& position) const {
     return tilemap(x,y).blocking;
 }
 
-GameObject* World::create_player(const Level& level) {
-    // Create FSM
-    Transitions transitions = {
-        {{StateType::Standing, Transition::Move}, StateType::Running},
-        {{StateType::Running, Transition::Stop}, StateType::Standing},
-        {{StateType::Running, Transition::Move}, StateType::Running},
 
-    };
-    States states = {
-        {StateType::Standing, new Standing()},
-        {StateType::Running, new Running()}
-    };
-    FSM* fsm = new FSM{transitions, states, StateType::Standing};
-
-    //player input
-    Keyboard_Input* input = new Keyboard_Input();
-
-    player = new GameObject({1,1}, fsm, input, Color {160, 0, 255, 255});
-    return player;
-}
 
 void World::move_to(Vec<float>& position, const Vec<int>& size, Vec<float>& velocity) {
+    float epsilon = 0.001f;
+    auto left = position.x;
+    auto right = position.x + size.x - epsilon;
+    auto bottom = position.y;
+    auto top = position.y + size.y - epsilon;
     // test sides first. if both collide move backward
     // bottom side
-    if (collides(position) && collides({position.x + size.x, position.y})) {
+    if (collides({left, bottom}) && collides({right, bottom})) {
         position.y = std::ceil(position.y);
         velocity.y = 0;
     }
     // top side
-    else if (collides({position.x, position.y + size.y}) && collides({position.x + size.x, position.y + size.y})) {
+    else if (collides({left, top}) && collides({right, top})) {
         position.y = std::floor(position.y);
         velocity.y = 0;
     }
     // left side
-    if (collides(position) && collides({position.x, position.y + size.y})) {
+    if (collides({left, bottom}) && collides({left, top})) {
         position.x = std::ceil(position.x);
         velocity.x = 0;
     }
     // right side
-    else if (collides({position.x + size.x, position.y}) && collides({position.x + size.x, position.y + size.y})) {
+    else if (collides({right, bottom}) && collides({right, top})) {
         position.x = std::floor(position.x);
         velocity.x = 0;
     }
-
-    //mine
-    auto TL = Vec<float>{position.x, position.y + size.y};
-    auto TR = Vec<float>{position.x + size.x, position.y + size.y};
-    auto BL = position;
-    auto BR = Vec<float>{position.x  + size.x, position.y};
-
-    if (collides(TL)) {
-        float dx = (std::ceil(TL.x) - TL.x);
-        float dy = (TL.y - std::floor(TL.y));
-        if (dx < dy){
-            position.x = std::ceil(position.x);
-            velocity.x = 0;
-        }
-        else {
-            position.y = std::floor(position.y);
-            velocity.y = 0;
-        }
-    }
-    if (collides(TR)) {
-        float dx = (TR.x - std::floor(TR.x));
-        float dy = (TR.y - std::floor(TR.y));
-        if (dx < dy){
-            position.x = std::floor(position.x);
-            velocity.x = 0;
-        }
-        else {
-            position.y = std::floor(position.y);
-            velocity.y = 0;
-        }
-    }
-    if (collides(BL)) {
-        float dx = (std::ceil(BL.x) - BL.x);
-        float dy = (std::ceil(BL.y) - BL.y);
-        if (dx < dy){
-            position.x = std::ceil(position.x);
-            velocity.x = 0;
-        }
-        else {
+    // test corners next, move back in smaller axis
+    if (collides({left, bottom})) {
+        float dx = std::ceil(position.x) - position.x;
+        float dy = std::ceil(position.y) - position.y;
+        if (dx > dy) {
             position.y = std::ceil(position.y);
             velocity.y = 0;
         }
+        else {
+            position.x = std::ceil(position.x);
+            velocity.x = 0;
+        }
     }
-    if (collides(BR)) {
-        float dx = (BR.x - std::floor(BR.x));
-        float dy = (std::ceil(BR.y) - BR.y);
-        if (dx < dy){
+    else if (collides({left, top})) {
+        float dx = std::ceil(position.x) - position.x;
+        float dy = position.y - std::floor(position.y);
+        if (dx > dy) {
+            position.y = std::floor(position.y);
+            velocity.y = 0;
+        }
+        else {
+            position.x = std::ceil(position.x);
+            velocity.x = 0;
+        }
+    }
+    else if (collides({right, bottom})) {
+        float dx = position.x - std::floor(position.x);
+        float dy = std::ceil(position.y) - position.y;
+        if (dx > dy) {
+            position.y = std::ceil(position.y);
+            velocity.y = 0;
+        }
+        else {
             position.x = std::floor(position.x);
             velocity.x = 0;
         }
-        else {
-            position.y = std::ceil(position.y);
+    }
+    else if (collides({right, top})) {
+        float dx = position.x - std::floor(position.x);
+        float dy = position.y - std::floor(position.y);
+        if (dx > dy) {
+            position.y = std::floor(position.y);
             velocity.y = 0;
+        }
+        else {
+            position.x = std::floor(position.x);
+            velocity.x = 0;
         }
     }
 }
 
 void World::update(float dt) {
-    //currently updating player
-    auto position = player->physics.position;
-    auto velocity = player->physics.velocity;
-    auto acceleration = player->physics.acceleration;
+    for (auto& obj : game_objects) {
+        obj->update(*this, dt);
+        //currently updating player
+        auto position = obj->physics.position;
+        auto velocity = obj->physics.velocity;
+        auto acceleration = obj->physics.acceleration;
 
-    velocity += 0.5f * acceleration * dt;
-    position += velocity * dt;
-    velocity += 0.5f * acceleration * dt;
-    velocity.x *= player->physics.damping;
-    velocity.y *= player->physics.damping;
+        velocity += 0.5f * acceleration * dt;
+        position += velocity * dt;
+        velocity += 0.5f * acceleration * dt;
+        velocity.x *= obj->physics.damping;
+        velocity.y *= obj->physics.damping;
 
-    velocity.x = std::clamp(velocity.x, -player->physics.terminal_velocity, player->physics.terminal_velocity);
-    velocity.y = std::clamp(velocity.y, -player->physics.terminal_velocity, player->physics.terminal_velocity);
+        velocity.x = std::clamp(velocity.x, -obj->physics.terminal_velocity, obj->physics.terminal_velocity);
+        velocity.y = std::clamp(velocity.y, -obj->physics.terminal_velocity, obj->physics.terminal_velocity);
 
-    //check for collisions
-    Vec<float> future_position{position.x, player->physics.position.y};
-    Vec<float> future_veloctiy{velocity.x, 0};
-    move_to(future_position, player->size, future_veloctiy);
+        //check for collisions
+        Vec<float> future_position{position.x, obj->physics.position.y};
+        Vec<float> future_veloctiy{velocity.x, 0};
+        move_to(future_position, obj->size, future_veloctiy);
 
-    // now y direction after (maybe) moving in x
-    future_veloctiy.y = velocity.y;
-    future_position.y = position.y;
-    move_to(future_position, player->size, future_veloctiy);
-    // update the player position and velocity
-    player->physics.position = future_position;
-    player->physics.velocity = future_veloctiy;
-    touch_tiles(*player);
+        // now y direction after (maybe) moving in x
+        future_veloctiy.y = velocity.y;
+        future_position.y = position.y;
+        move_to(future_position, obj->size, future_veloctiy);
+        // update the player position and velocity
+        obj->physics.position = future_position;
+        obj->physics.velocity = future_veloctiy;
+        touch_tiles(*obj);
+    }
+    //check player collision
+    build_quadtree();
+    std::vector<GameObject*> collides_with = quad_tree.query_range(player->get_bounding_box());
+    for (auto& obj : collides_with){
+        if (obj == player) continue;
+        player->take_damage(obj->damage);
+    }
+    // check for dead objects and remove them
+    auto itr = std::remove_if(std::begin(game_objects), std::end(game_objects),
+            [](GameObject* obj) {return !obj->is_alive;}
+    );
+    game_objects.erase(itr, std::end(game_objects));
+
+    //check for player death
+    if (!player->is_alive) {
+        end_game=true;
+        return;
+    }
 }
 
-void World::load_level(const Level& level) {
-    for (const auto& [pos, tile_id] : level.tile_locations) {
-        tilemap(pos.x, pos.y) = level.tile_types.at(tile_id);
-    }
-    audio->load_sounds({});
+    void World::load_level(const Level& level) {
+        for (const auto& [pos, tile_id] : level.tile_locations) {
+            tilemap(pos.x, pos.y) = level.tile_types.at(tile_id);
+        }
+        audio->load_sounds({});
+
+        //get all enemies
+        for (const auto& [pos, enemy_name] : level.enemy_locations) {
+            auto enemy = new GameObject{enemy_name, nullptr, nullptr, {255, 255, 0, 255}};
+            enemy->physics.position = pos;
+            game_objects.push_back(enemy);
+        }
+    game_objects.push_back(player);
 }
 
 void World::touch_tiles(GameObject& obj) {
-    int x = std::floor(obj.physics.position.x);
-    int y = std::floor(obj.physics.position.y);
-    const std::vector<Vec<int>> displacements{{0,0}, {obj.size.x, 0},{0, obj.size.y}, {obj.size.x, obj.size.y}};
-    for (const auto& displacement : displacements) {
-        Tile& tile = tilemap(x + displacement.x, y + displacement.y);
+    float epsilon = 0.001f;
+
+
+    const std::vector<Vec<float>> tiles {
+            {obj.physics.position.x - epsilon, obj.physics.position.y},
+            {obj.physics.position.x, obj.physics.position.y + obj.size.y + epsilon},
+            {obj.physics.position.x + obj.size.x + epsilon, obj.physics.position.y},
+            {obj.physics.position.x, obj.physics.position.y - epsilon}
+    };
+
+    for (const auto& p : tiles) {
+        int x = static_cast<int>(std::floor(p.x));
+        int y = static_cast<int>(std::floor(p.y));
+        Tile& tile = tilemap(x, y);
         if (!tile.event_name.empty()) {
             auto itr = events.find(tile.event_name);
             if (itr == events.end()) {
@@ -179,5 +204,13 @@ void World::touch_tiles(GameObject& obj) {
             }
             itr->second->perform(*this, obj);
         }
+    }
+}
+
+void World::build_quadtree() {
+    quad_tree.clear();
+
+    for (auto obj : game_objects) {
+        quad_tree.insert(obj);
     }
 }

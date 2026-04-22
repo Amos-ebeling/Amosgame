@@ -12,7 +12,8 @@ add_library(world
         keyboard_input.cpp keyboard_input.h
         input.cpp input.h
         audio.cpp action.h
-        events.h events.cpp)
+        events.h events.cpp
+        quadtree.cpp quadtree.h)
 
 
 target_include_directories(world PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
