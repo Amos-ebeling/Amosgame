@@ -6,6 +6,10 @@ enum class ActionType {
     MoveRight,
     MoveUp,
     MoveDown,
+    MoveUpRight,
+    MoveDownRight,
+    MoveUpLeft,
+    MoveDownLeft,
     AttackAll
 };
 
@@ -19,6 +23,22 @@ public:
 
 };
 
+
+class MoveUpRight : public Action {
+    void perform(World& world, GameObject& obj) override;
+};
+
+class MoveDownLeft : public Action {
+    void perform(World& world, GameObject& obj) override;
+};
+
+class MoveUpLeft : public Action {
+    void perform(World& world, GameObject& obj) override;
+};
+
+class MoveDownRight : public Action {
+    void perform(World& world, GameObject& obj) override;
+};
 
 class MoveRight : public Action {
     void perform(World& world, GameObject& obj) override;
@@ -37,5 +57,10 @@ class MoveDown : public Action {
 };
 
 class AttackAll : public Action {
+    void perform(World& world, GameObject& obj) override;
+};
+
+class ThrowStick : public Action {
+public:
     void perform(World& world, GameObject& obj) override;
 };

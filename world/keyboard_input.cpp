@@ -9,7 +9,18 @@
 void Keyboard_Input::get_input() {
     if (next_action_type == ActionType::AttackAll) return;
     const bool *key_states = SDL_GetKeyboardState(NULL);
-
+    if (key_states[SDL_SCANCODE_D] && key_states[SDL_SCANCODE_W]) {
+        next_action_type = ActionType::MoveUpRight;
+    }
+    if (key_states[SDL_SCANCODE_D] && key_states[SDL_SCANCODE_S]) {
+        next_action_type = ActionType::MoveDownRight;
+    }
+    if (key_states[SDL_SCANCODE_W] && key_states[SDL_SCANCODE_A]) {
+        next_action_type = ActionType::MoveUpLeft;
+    }
+    if (key_states[SDL_SCANCODE_S] && key_states[SDL_SCANCODE_A]) {
+        next_action_type = ActionType::MoveDownLeft;
+    }
     if (key_states[SDL_SCANCODE_D]) {
         next_action_type = ActionType::MoveRight;
     }
@@ -33,10 +44,14 @@ void Keyboard_Input::handle_input(World& world, GameObject& obj) {
     }
 }
 
-void Keyboard_Input::collect_discrete_event(SDL_Event* event) {
+Action* Keyboard_Input::collect_discrete_event(SDL_Event* event) {
     if (event->type == SDL_EVENT_KEY_DOWN && event->key.repeat == 0){
         if (event->key.scancode == SDL_SCANCODE_M) {
             next_action_type = ActionType::AttackAll;
         }
     }
+    if (event->key.scancode == SDL_SCANCODE_T) {
+        return new ThrowStick();
+    }
+    return nullptr;
 }

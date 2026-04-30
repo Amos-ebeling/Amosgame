@@ -1,6 +1,7 @@
 #include "game.h"
 #include "fsm.h"
 #include "asset_manager.h"
+#include "ai_input.h"
 #include "input.h"
 #include "keyboard_input.h"
 #include "states.h"
@@ -28,7 +29,11 @@ Game::~Game() {
 void Game::handle_event(SDL_Event* event) {
     switch (mode) {
         case GameMode::Playing:
-            player->input->collect_discrete_event(event);
+            auto action = player->input->collect_discrete_event(event);
+            if (action) {
+                action->perform(*world, *player);
+                delete action;
+            }
             break;
     }
 }
@@ -49,14 +54,22 @@ void Game::update() {
     while (lag >= dt) {
         switch (mode) {
             case GameMode::Playing:
-                player->input->handle_input(*world, *player);
+                for (auto obj : world->game_objects) {
+                    obj->input->handle_input(*world, *obj);
+                }
                 world->update(dt);
-                //[ut cam ahead of player
+                //put cam ahead of player
                 float L = length(player->physics.velocity);
                 Vec displacement = 8.0f * player->physics.velocity/(1.0f+L);
                 camera.update(player->physics.position+displacement, dt);
+
+                //check for level end
                 if (world->end_level) {
                     load_level();
+                }
+                //check for game over
+                if (world->end_game) {
+                    mode = GameMode::GameOver;
                 }
                 break;
         }
@@ -77,6 +90,14 @@ void Game::render() {
     for (auto& obj : world->game_objects) {
         camera.render(*obj);
     }
+    //projectiles
+    for (auto& projectile : world->projectiles) {
+        camera.render(*projectile);
+    }
+
+    if (mode == GameMode::GameOver) {
+        camera.render_game_over();
+    }
 
     graphics.update();
 }
@@ -95,9 +116,13 @@ void Game::load_level() {
     delete world;
     world = new World(level, audio, player.get(), events);
 
+    //get available items
+    AssetManager::get_available_items("items", graphics, *world);
+
     //asset for obj
     for (auto& obj : world->game_objects) {
         if (obj == world->player) continue;
+        update_enemy(*obj);
         AssetManager::get_game_object_details(obj->obj_name + "-enemy", graphics, *obj);
     }
 
@@ -128,3 +153,27 @@ void Game::create_player() {
     player = std::make_unique<GameObject>("player", fsm, input, Color {160, 0, 255, 255});
 }
 
+void Game::update_enemy(GameObject& obj) {
+    Transitions transitions;
+    States states;
+    if (obj.obj_name == "lion") {
+        transitions = {
+            {{StateType::Standing, Transition::Move}, StateType::Patrolling},
+            {{StateType::Patrolling, Transition::Stop}, StateType::Standing}
+        };
+        states = {
+            {StateType::Standing, new Standing},
+            {StateType::Patrolling, new Patrolling}
+        };
+    }
+    else {
+        //throw(std::runtime_error("no enemy found to update");
+    }
+
+    FSM* fsm = new FSM{transitions, states, StateType::Patrolling};
+    obj.fsm = fsm;
+
+    Input* input = new Ai_Input{};
+    input->next_action_type = ActionType::MoveRight;
+    obj.input = input;
+}

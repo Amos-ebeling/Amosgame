@@ -5,7 +5,7 @@
 Camera::Camera(Graphics& graphics, float tilesize)
     :graphics{graphics}, tilesize{tilesize}, physics{location, {0.0}, {0,0}} {
     calculate_visible_tiles();
-    physics.damping = .9;
+    physics.damping = .95;
 }
 
 void Camera::calculate_visible_tiles() {
@@ -28,11 +28,10 @@ Vec<float> Camera::world_to_screen(const Vec<float>& world_position) const {
 
 void Camera::update(const Vec<float>& new_location, float dt) {
     goal = new_location;
-    physics.acceleration = 10.0f*(goal - location);
-
-    physics.velocity += 0.5f * physics.acceleration * dt;
+    physics.acceleration = 7.0f*(goal - location);
+    physics.velocity += 0.3f * physics.acceleration * dt;
     location += physics.velocity * dt;
-    physics.velocity += 0.5f * physics.acceleration * dt;
+    physics.velocity += 0.3f * physics.acceleration * dt;
     physics.velocity *= {physics.damping, physics.damping};
 
     calculate_visible_tiles();
@@ -96,4 +95,9 @@ void Camera::render(const GameObject& obj) const {
         render(obj.physics.position, obj.color);
     }
     render(obj.physics.position, obj.sprite, obj.flash_sprite());
+}
+
+void Camera::render_game_over() {
+    SDL_FRect fullscreen{0.0f, 0.0f, static_cast<float>(graphics.width), static_cast<float>(graphics.height)};
+    graphics.draw(fullscreen, Color{0,0,0,180}, true);
 }

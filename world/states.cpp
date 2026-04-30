@@ -1,6 +1,7 @@
 #include "states.h"
 #include "action.h"
 #include "game_object.h"
+#include "random.h"
 #include "world.h"
 
 // Helper function
@@ -21,6 +22,25 @@ void Standing::on_enter(World&, GameObject& obj) {
 }
 
 Action* Standing::input(World& world, GameObject& obj, ActionType action_type) {
+    if (action_type == ActionType::MoveUpLeft) {
+        obj.fsm->transition(Transition::Move, world, obj);
+        return new MoveUpLeft();
+    }
+    if (action_type == ActionType::MoveDownRight) {
+        obj.fsm->transition(Transition::Move, world, obj);
+        return new MoveDownRight();
+    }
+    if (action_type == ActionType::MoveDownLeft) {
+        obj.fsm->transition(Transition::Move, world, obj);
+        return new MoveDownLeft();
+    }
+    if (action_type == ActionType::MoveUpRight) {
+        obj.fsm->transition(Transition::Move, world, obj);
+        return new MoveUpRight();
+    }
+    if (action_type == ActionType::AttackAll) {
+        obj.fsm->transition(Transition::AttackAll, world, obj);
+    }
     if (action_type == ActionType::MoveLeft) {
         obj.fsm->transition(Transition::Move, world, obj);
         return new MoveLeft();
@@ -49,6 +69,22 @@ void Running::on_enter(World&, GameObject& obj) {
 }
 
 Action* Running::input(World& world, GameObject& obj, ActionType action_type) {
+    if (action_type == ActionType::MoveUpLeft) {
+        obj.fsm->transition(Transition::Move, world, obj);
+        return new MoveUpLeft();
+    }
+    if (action_type == ActionType::MoveDownRight) {
+        obj.fsm->transition(Transition::Move, world, obj);
+        return new MoveDownRight();
+    }
+    if (action_type == ActionType::MoveDownLeft) {
+        obj.fsm->transition(Transition::Move, world, obj);
+        return new MoveDownLeft();
+    }
+    if (action_type == ActionType::MoveUpRight) {
+        obj.fsm->transition(Transition::Move, world, obj);
+        return new MoveUpRight();
+    }
     if (action_type == ActionType::None) {
         obj.fsm->transition(Transition::Stop, world, obj);
     }
@@ -70,6 +106,28 @@ Action* Running::input(World& world, GameObject& obj, ActionType action_type) {
     }
     return nullptr;
 }
+
+//patrolling
+void Patrolling::on_enter(World& world, GameObject& obj) {
+    //set cooldown to random time 3-10
+    elapsed = 0;
+    cooldown = randint(3, 10);
+    Running::on_enter(world, obj);
+}
+
+Action* Patrolling::input(World& world, GameObject& obj, ActionType action_type) {
+    if (elapsed >= cooldown) {
+        return  Running::input(world, obj, ActionType::None);
+    }
+    return Running::input(world, obj, action_type);
+}
+
+void Patrolling::update(World&, GameObject&, double dt) {
+    elapsed += dt;
+}
+
+
+
 
 //AttackAll
 void AttackAllEnemies::on_enter(World& world, GameObject& obj) {

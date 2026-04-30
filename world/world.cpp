@@ -116,35 +116,10 @@ void World::move_to(Vec<float>& position, const Vec<int>& size, Vec<float>& velo
     }
 }
 
-void World::update(float dt) {
+void World::update(double dt) {
     for (auto& obj : game_objects) {
         obj->update(*this, dt);
-        //currently updating player
-        auto position = obj->physics.position;
-        auto velocity = obj->physics.velocity;
-        auto acceleration = obj->physics.acceleration;
-
-        velocity += 0.5f * acceleration * dt;
-        position += velocity * dt;
-        velocity += 0.5f * acceleration * dt;
-        velocity.x *= obj->physics.damping;
-        velocity.y *= obj->physics.damping;
-
-        velocity.x = std::clamp(velocity.x, -obj->physics.terminal_velocity, obj->physics.terminal_velocity);
-        velocity.y = std::clamp(velocity.y, -obj->physics.terminal_velocity, obj->physics.terminal_velocity);
-
-        //check for collisions
-        Vec<float> future_position{position.x, obj->physics.position.y};
-        Vec<float> future_veloctiy{velocity.x, 0};
-        move_to(future_position, obj->size, future_veloctiy);
-
-        // now y direction after (maybe) moving in x
-        future_veloctiy.y = velocity.y;
-        future_position.y = position.y;
-        move_to(future_position, obj->size, future_veloctiy);
-        // update the player position and velocity
-        obj->physics.position = future_position;
-        obj->physics.velocity = future_veloctiy;
+        update_object(obj, dt);
         touch_tiles(*obj);
     }
     //check player collision
@@ -154,18 +129,62 @@ void World::update(float dt) {
         if (obj == player) continue;
         player->take_damage(obj->damage);
     }
+    //check for collision with projectile and enemy
+    for (auto& projectile : projectiles) {
+        std::vector<GameObject*> p_collides_with = quad_tree.query_range(projectile->get_bounding_box());
+        for (auto& obj : p_collides_with) {
+            if (obj==player) continue;
+            obj->take_damage(projectile->damage);
+            projectile->elapsed += projectile->lifetime;
+        }
+    }
     // check for dead objects and remove them
     auto itr = std::remove_if(std::begin(game_objects), std::end(game_objects),
             [](GameObject* obj) {return !obj->is_alive;}
     );
     game_objects.erase(itr, std::end(game_objects));
 
+    //check for old projectiles
+    auto p_itr = std::remove_if(std::begin(projectiles), std::end(projectiles),
+    [](Projectile* projectile) {return projectile->elapsed >= projectile->lifetime;}
+    );
+    projectiles.erase(p_itr, std::end(projectiles));
     //check for player death
     if (!player->is_alive) {
         end_game=true;
         return;
     }
 }
+
+void World::update_object(GameObject* obj, double dt) {
+    //currently updating player
+    auto position = obj->physics.position;
+    auto velocity = obj->physics.velocity;
+    auto acceleration = obj->physics.acceleration;
+
+    velocity += 0.5f * acceleration * static_cast<float>(dt);
+    position += velocity * static_cast<float>(dt);
+    velocity += 0.5f * acceleration * static_cast<float>(dt);
+    velocity.x *= obj->physics.damping;
+    velocity.y *= obj->physics.damping;
+
+    velocity.x = std::clamp(velocity.x, -obj->physics.terminal_velocity, obj->physics.terminal_velocity);
+    velocity.y = std::clamp(velocity.y, -obj->physics.terminal_velocity, obj->physics.terminal_velocity);
+
+    //check for collisions
+    Vec<float> future_position{position.x, obj->physics.position.y};
+    Vec<float> future_veloctiy{velocity.x, 0};
+    move_to(future_position, obj->size, future_veloctiy);
+
+    // now y direction after (maybe) moving in x
+    future_veloctiy.y = velocity.y;
+    future_position.y = position.y;
+    move_to(future_position, obj->size, future_veloctiy);
+    // update the player position and velocity
+    obj->physics.position = future_position;
+    obj->physics.velocity = future_veloctiy;
+}
+
 
     void World::load_level(const Level& level) {
         for (const auto& [pos, tile_id] : level.tile_locations) {

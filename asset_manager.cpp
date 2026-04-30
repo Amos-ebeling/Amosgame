@@ -1,14 +1,15 @@
 #include "asset_manager.h"
-
+#include "world.h"
 #include <filesystem>
 #include <fstream>
 #include "random.h"
 #include "game_object.h"
+#include "projectile.h"
 
 
 
 // helper function to convert a list of sprites to animated sprites
-void convert_sprites(std::vector<Sprite>& sprites, Graphics& graphics, GameObject& obj, bool random_start) {
+void convert_sprites(std::vector<Sprite>& sprites, Graphics& graphics, GameObject* obj, bool random_start) {
     for (auto& sprite : sprites) {
         auto first_location = sprite.location;
         sprite.filename = (std::filesystem::current_path() / "assets" / sprite.filename).string();
@@ -23,7 +24,7 @@ void convert_sprites(std::vector<Sprite>& sprites, Graphics& graphics, GameObjec
         if (random_start) {
             starting_frame = randint(0, sprite.number_of_frames - 1);
         }
-        obj.sprites[sprite.name] = AnimatedSprite{sprite_frames, sprite.dt_per_frame, starting_frame};
+        obj->sprites[sprite.name] = AnimatedSprite{sprite_frames, sprite.dt_per_frame, starting_frame};
     }
 }
 
@@ -41,7 +42,7 @@ void AssetManager::get_game_object_details(const std::string& name, Graphics& gr
 
     // get the object's sprites
     std::vector<Sprite> sprites_from_json = json.at("sprites").get<std::vector<Sprite>>();
-    convert_sprites(sprites_from_json, graphics, obj, random_start);
+    convert_sprites(sprites_from_json, graphics, &obj, random_start);
 
     // get the object's physics
     auto pos = obj.physics.position;
@@ -108,4 +109,44 @@ void AssetManager::update_level_details(const Level& level) {
     }
     nlohmann::json j = level;
     file << std::setw(4) << j;
+}
+
+void AssetManager::get_available_items(const std::string& filename, Graphics& graphics, World& world) {
+    auto path_start = std::filesystem::current_path() / "assets";
+    auto path = path_start / (filename+ ".json");
+
+    std::ifstream file(path);
+    if (!file) {
+        throw std::runtime_error("Could not open file: " + path.string());
+    }
+
+    nlohmann::json json;
+    file >> json;
+
+    //get all projectiles
+    for (const auto& j : json.at("projectiles")) {
+        //get json details
+        std::string name = j.at("name").get<std::string>();
+        Physics physics = j.at("physics").get<Physics>();
+        double lifetime = j.at("lifetime").get<double>();
+        Vec<int> size = j.at("size").get<Vec<int>>();
+        int damage = j.at("damage").get<int>();
+        std::vector<Sprite> sprites_from_json = j.at("sprites").get<std::vector<Sprite>>();
+
+        //build the sprites
+        Projectile tmp{name, nullptr, nullptr, lifetime};
+        convert_sprites(sprites_from_json, graphics, &tmp, false);
+        auto sprites = tmp.sprites;
+
+
+        world.available_items[name] = [name, physics, lifetime, sprites, size, damage]() {
+            auto projectile = new Projectile{name, nullptr, nullptr, lifetime};
+            projectile->physics = physics;
+            projectile->sprites = sprites;
+            projectile->size = size;
+            projectile->damage = damage;
+            projectile->set_sprite("idle");
+            return projectile;
+        };
+    }
 }

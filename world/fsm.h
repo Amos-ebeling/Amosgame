@@ -9,7 +9,7 @@ class GameObject;
 enum class ActionType;
 class State;
 
-enum class StateType {Standing, Running, AttackAllEnemies};
+enum class StateType {Standing, Running, AttackAllEnemies, Patrolling};
 enum class Transition {Stop, Move, AttackAll};
 
 using Transitions = std::map<std::pair<StateType, Transition>, StateType>;

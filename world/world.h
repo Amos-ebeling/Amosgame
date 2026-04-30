@@ -8,6 +8,7 @@
 #include "audio.h"
 #include "events.h"
 #include "quadtree.h"
+#include "projectile.h"
 
 class Level;
 class Audio;
@@ -21,7 +22,8 @@ public:
     bool collides(const Vec<float>& position) const;
     GameObject* create_player(const Level& level);
     void move_to(Vec<float>& position, const Vec<int>& size, Vec<float>& velocity);
-    void update(float dt);
+    void update(double dt);
+    void update_object(GameObject*, double dt);
     void load_level(const Level& level);
 
     Tilemap tilemap;
@@ -35,7 +37,11 @@ public:
     Audio* audio;
     Events events;
     std::vector<GameObject*> game_objects;
+    std::vector<Projectile*> projectiles;
     void touch_tiles(GameObject& obj);
 
     QuadTree quad_tree;
+
+    //items
+    std::map<std::string, std::function<GameObject*()>> available_items;
 };
