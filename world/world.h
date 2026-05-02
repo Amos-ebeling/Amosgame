@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <SDL3/SDL.h>
+#include "sheep.h"
 #include "tilemap.h"
 #include "vec.h"
 #include "game_object.h"
@@ -38,6 +39,7 @@ public:
     Events events;
     std::vector<GameObject*> game_objects;
     std::vector<Projectile*> projectiles;
+    std::vector<Sheep*> sheeps;
     void touch_tiles(GameObject& obj);
 
     QuadTree quad_tree;

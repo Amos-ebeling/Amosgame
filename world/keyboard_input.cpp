@@ -12,16 +12,16 @@ void Keyboard_Input::get_input() {
     if (key_states[SDL_SCANCODE_D] && key_states[SDL_SCANCODE_W]) {
         next_action_type = ActionType::MoveUpRight;
     }
-    if (key_states[SDL_SCANCODE_D] && key_states[SDL_SCANCODE_S]) {
+    else if (key_states[SDL_SCANCODE_D] && key_states[SDL_SCANCODE_S]) {
         next_action_type = ActionType::MoveDownRight;
     }
-    if (key_states[SDL_SCANCODE_W] && key_states[SDL_SCANCODE_A]) {
+    else if (key_states[SDL_SCANCODE_W] && key_states[SDL_SCANCODE_A]) {
         next_action_type = ActionType::MoveUpLeft;
     }
-    if (key_states[SDL_SCANCODE_S] && key_states[SDL_SCANCODE_A]) {
+    else if (key_states[SDL_SCANCODE_S] && key_states[SDL_SCANCODE_A]) {
         next_action_type = ActionType::MoveDownLeft;
     }
-    if (key_states[SDL_SCANCODE_D]) {
+    else if (key_states[SDL_SCANCODE_D]) {
         next_action_type = ActionType::MoveRight;
     }
     else if (key_states[SDL_SCANCODE_A]) {
@@ -49,9 +49,10 @@ Action* Keyboard_Input::collect_discrete_event(SDL_Event* event) {
         if (event->key.scancode == SDL_SCANCODE_M) {
             next_action_type = ActionType::AttackAll;
         }
+        if (event->key.scancode == SDL_SCANCODE_T) {
+            return new ThrowStick();
+        }
     }
-    if (event->key.scancode == SDL_SCANCODE_T) {
-        return new ThrowStick();
-    }
+
     return nullptr;
 }

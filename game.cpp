@@ -166,8 +166,18 @@ void Game::update_enemy(GameObject& obj) {
             {StateType::Patrolling, new Patrolling}
         };
     }
+    else if (obj.obj_name == "sheep"){
+        transitions = {
+            {{StateType::Standing, Transition::Move}, StateType::Patrolling},
+            {{StateType::Patrolling, Transition::Stop}, StateType::Standing}
+        };
+        states = {
+            {StateType::Standing, new Standing},
+            {StateType::Patrolling, new Patrolling}
+        };
+    }
     else {
-        //throw(std::runtime_error("no enemy found to update");
+        throw std::runtime_error("no enemy found to update");
     }
 
     FSM* fsm = new FSM{transitions, states, StateType::Patrolling};

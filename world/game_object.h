@@ -42,6 +42,7 @@ public:
     int max_health;
     int damage;
     bool is_alive = true;
+    int sheep_count = 0;
 
     double i_frame{0.0};
 };

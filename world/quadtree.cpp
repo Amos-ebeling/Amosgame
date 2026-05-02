@@ -30,7 +30,7 @@ bool QuadTree::insert(GameObject* obj) {
     }
 
     // if there is space add it
-    if (objects.size() < NODE_CAPACITY && northeast == nullptr) {
+    if (objects.size() < NODE_CAPACITY && northwest == nullptr) {
         objects.push_back(obj);
         return true;
     }
@@ -40,7 +40,7 @@ bool QuadTree::insert(GameObject* obj) {
         subdivide();
     }
 
-    return northeast->insert(obj)||northwest->insert(obj)||south_east->insert(obj)||south_east->insert(obj);
+    return northeast->insert(obj)||northwest->insert(obj)||south_east->insert(obj)||south_west->insert(obj);
 }
 
 std::vector<GameObject *> QuadTree::query_range(AABB range) const {

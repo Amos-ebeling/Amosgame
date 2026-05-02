@@ -37,7 +37,8 @@
     "terminal_velocity" : 30.0
   },
   "size" : [1,1],
-  "health" : 100,
+  "health" : 5,
   "max_health" : 10,
-  "damage" : 2
+  "damage" : 2,
+  "sheep_count" : 0
 }

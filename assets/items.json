@@ -8,14 +8,14 @@
                             "name" : "idle",
                             "filename" : "Stick.png",
                             "location" : [0, 0],
-                            "size" : [10, 10],
-                            "scale" : 1,
+                            "size" : [32, 32],
+                            "scale" : 2,
                             "number_of_frames" : 5,
                             "dt_per_frame" : 0.1
                         }
                     ],
                     "physics" : {
-                        "velocity": [10, 0],
+                        "velocity": [10, 10],
                         "acceleration" : [0, 0],
                         "gravity": -30.0,
                         "damping": 1.0,
