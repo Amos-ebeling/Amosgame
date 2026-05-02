@@ -2,7 +2,7 @@
 
 #include "vec.h"
 #include "tilemap.h"
-
+#include "audio.h"
 #include <string>
 #include <map>
 
@@ -20,6 +20,7 @@ public:
     std::vector<std::string> tile_filenames;
     TileLocations tile_locations;
     std::map<std::string, Tile> tile_types;
+    std::vector<Sound> sounds;
 
     Vec<int> player_spawn_location{-1, -1};
     EnemyLocations enemy_locations;

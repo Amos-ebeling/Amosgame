@@ -6982,6 +6982,12 @@
             ],
             "tile": "level_tiles.json:top_right_corner"
         }
+    ],"sounds" : [
+        {
+            "name": "background",
+            "filename" : "Basic_Music.mp3",
+            "loop_forever": true
+        }
     ],
     "width": 31
 }
