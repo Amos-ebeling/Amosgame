@@ -27,5 +27,64 @@
                     "lifetime" : 2,
                     "size" : [1,1]
                 }
-            ]
+            ],
+    "sheep" : {
+        "name": "sheep",
+        "sprites": [
+            {
+                "name": "idle",
+                "filename": "Sheep_walking.png",
+                "location": [
+                    0,
+                    0
+                ],
+                "size": [
+                    32,
+                    32
+                ],
+                "scale": 2,
+                "number_of_frames": 1,
+                "dt_per_frame": 0.1
+            },
+            {
+                "name": "walking",
+                "filename": "Sheep_walking.png",
+                "location": [
+                    0,
+                    0
+                ],
+                "size": [
+                    32,
+                    32
+                ],
+                "scale": 2,
+                "number_of_frames": 5,
+                "dt_per_frame": 0.1
+            }
+        ],
+        "physics": {
+            "position": [
+                10,
+                5
+            ],
+            "velocity": [
+                0,
+                0
+            ],
+            "acceleration": [
+                0,
+                0
+            ],
+            "damping": 0.9,
+            "walk_acceleration": 15.0,
+            "terminal_velocity": 30.0
+        },
+        "size": [
+            1,
+            1
+        ],
+        "health": 5,
+        "max_health": 10,
+        "damage": 1
+    }
 }

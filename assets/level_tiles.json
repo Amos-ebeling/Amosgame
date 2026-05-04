@@ -127,7 +127,43 @@
         "dt_per_frame": -1
     },
     "blocking": false,
-    "event_name": "next_level"
+    "event_name": ""
+    },
+     { "sprite": {
+        "name": "spawn",
+        "filename": "Special_tiles.png",
+        "location": [0, 0],
+        "size": [32, 32],
+        "scale": 2,
+        "number_of_frames": 1,
+        "dt_per_frame": -1
+      },
+        "blocking": false,
+        "event_name": "spawn_sheep"
+    },
+      { "sprite": {
+        "name": "portal",
+        "filename": "Special_tiles.png",
+        "location": [32, 0],
+        "size": [32, 32],
+        "scale": 2,
+        "number_of_frames": 1,
+        "dt_per_frame": -1
+      },
+        "blocking": false,
+        "event_name": "next_level"
+    },
+    { "sprite": {
+      "name": "blacksquare",
+      "filename": "Special_tiles.png",
+      "location": [0, 32],
+      "size": [32, 32],
+      "scale": 2,
+      "number_of_frames": 1,
+      "dt_per_frame": -1
+    },
+      "blocking": false,
+      "event_name": ""
     }
   ]
 }

@@ -59,7 +59,6 @@ void Audio::play_sounds(const std::string& sound_name, bool loop_forever_in_back
     if (sound == sounds.end()) {
         throw std::runtime_error("Cannot find sound" + sound_name);
     }
-
     if (loop_forever_in_backround) {
         SDL_PropertiesID props = SDL_CreateProperties();
         SDL_SetNumberProperty(props, MIX_PROP_PLAY_LOOPS_NUMBER, -1);
@@ -68,11 +67,11 @@ void Audio::play_sounds(const std::string& sound_name, bool loop_forever_in_back
             std::string msg{SDL_GetError()};
             throw std::runtime_error(msg + "]\nUnable to load sound from: " + sound_name);
         }
-        else {
-            if (!MIX_PlayAudio(mixer, sound->second)) {
-                std::string msg{SDL_GetError()};
-                throw std::runtime_error(msg + "]\nUnable to load sound from: " + sound_name);
-            }
+    }
+    else {
+        if (!MIX_PlayAudio(mixer, sound->second)) {
+            std::string msg{SDL_GetError()};
+            throw std::runtime_error(msg + "]\nUnable to load sound from: " + sound_name);
         }
     }
 }

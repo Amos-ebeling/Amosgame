@@ -2,6 +2,7 @@
 #include "game_object.h"
 #include "projectile.h"
 #include "world.h"
+#include "audio.h"
 
 void MoveUpRight::perform(World& world, GameObject& obj) {
     obj.physics.acceleration.x = obj.physics.walk_acceleration;
@@ -46,6 +47,7 @@ void MoveDown::perform(World& world, GameObject& obj) {
 void ThrowStick::perform(World& world, GameObject& obj) {
     auto stick = dynamic_cast<Projectile*>(world.available_items["stick"]());
     stick->physics.position = obj.physics.position;
-    stick->physics.velocity = Vec{obj.physics.velocity.x/4.0f, obj.physics.velocity.y/4.0f} * stick->physics.velocity;
+    stick->physics.velocity = Vec{obj.physics.velocity.x/3.0f, obj.physics.velocity.y/3.0f} * stick->physics.velocity;
     world.projectiles.push_back(stick);
+    world.audio->play_sounds("stick_throw");
 }

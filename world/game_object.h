@@ -30,9 +30,9 @@ public:
     std::string obj_name;
     Physics physics;
     Vec<int> size;
-    FSM* fsm;
+    FSM* fsm = nullptr;
     Color color;
-    Input* input;
+    Input* input = nullptr;
     Sprites sprites;
     Sprite sprite;
     std::string sprite_name;

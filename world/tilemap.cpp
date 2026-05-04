@@ -23,7 +23,7 @@ void Tilemap::check_bounds(int x, int y) const {
 
 const Tile& Tilemap::operator()(int x, int y) const {
     check_bounds(x, y);
-    return tiles.at(x + y*width);
+    return tiles.at(x + y* width);
 }
 
 Tile& Tilemap::operator()(int x, int y) {

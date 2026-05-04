@@ -15,7 +15,8 @@ add_library(world
         events.h events.cpp
         quadtree.cpp quadtree.h
         projectile.cpp projectile.h
-        ai_input.h ai_input.cpp)
+        ai_input.h ai_input.cpp
+        sheep.h sheep.cpp)
 
 
 target_include_directories(world PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

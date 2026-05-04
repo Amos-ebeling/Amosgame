@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
 
-project(Param)
+project(game)
 
 set(CMAKE_CXX_STANDARD 20)
 add_compile_options(-g -Wall -Wextra -pedantic)
@@ -11,7 +11,7 @@ set(BUILD_SHARED_LIBS ON)
 if (WIN32)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-endif()
+endif ()
 include(FetchContent)
 set(FETCHCONTENT_QUIET FALSE)
 
@@ -49,8 +49,9 @@ add_subdirectory(world)
 
 add_library(game_lib
         game.cpp game.h
-        asset_manager.cpp asset_manager.h
-        level_designer.cpp level_designer.h
+        asset_manager.cpp
+        level_designer.h
+        level_designer.cpp
 )
 
 target_link_libraries(game_lib PUBLIC SDL3::SDL3 SDL3_mixer::SDL3_mixer graphics world utilities)
@@ -59,3 +60,12 @@ target_link_libraries(game PUBLIC game_lib)
 
 add_executable(level_designer main_designer.cpp)
 target_link_libraries(level_designer PUBLIC game_lib)
+
+
+
+
+
+
+
+
+

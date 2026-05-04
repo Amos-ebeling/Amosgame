@@ -7,11 +7,12 @@
 #include "states.h"
 
 Game::Game(std::string title, int width, int height)
-    :graphics{title, width, height},  camera{graphics, 64}, dt{1.0/60.0}, lag{0.0}, performance_frequency({SDL_GetPerformanceFrequency()}), prev_counter{SDL_GetPerformanceCounter()} {
+    : graphics{title, width, height}, camera{graphics, 64}, dt{1.0 / 60.0}, lag{0.0},
+      performance_frequency({SDL_GetPerformanceFrequency()}), prev_counter{SDL_GetPerformanceCounter()} {
     //load events
     get_events();
 
-      //give player
+    //give player
     create_player();
     AssetManager::get_game_object_details("player", graphics, *player);
 
@@ -39,7 +40,7 @@ void Game::handle_event(SDL_Event* event) {
 }
 
 void Game::input() {
-    switch (mode){
+    switch (mode) {
         case GameMode::Playing:
             camera.handle_input();
             player->input->get_input();
@@ -49,19 +50,19 @@ void Game::input() {
 
 void Game::update() {
     Uint64 now = SDL_GetPerformanceCounter();
-    lag += (now - prev_counter) / (float)performance_frequency;
+    lag += (now - prev_counter) / (float) performance_frequency;
     prev_counter = now;
     while (lag >= dt) {
         switch (mode) {
             case GameMode::Playing:
-                for (auto obj : world->game_objects) {
+                for (auto obj: world->game_objects) {
                     obj->input->handle_input(*world, *obj);
                 }
                 world->update(dt);
                 //put cam ahead of player
                 float L = length(player->physics.velocity);
-                Vec displacement = 8.0f * player->physics.velocity/(1.0f+L);
-                camera.update(player->physics.position+displacement, dt);
+                Vec displacement = 8.0f * player->physics.velocity / (1.0f + L);
+                camera.update(player->physics.position + displacement, dt);
 
                 //check for level end
                 if (world->end_level) {
@@ -87,11 +88,13 @@ void Game::render() {
     camera.render(*player);
 
     //enemies
-    for (auto& obj : world->game_objects) {
+    for (auto& obj: world->game_objects) {
         camera.render(*obj);
     }
+
+
     //projectiles
-    for (auto& projectile : world->projectiles) {
+    for (auto& projectile: world->projectiles) {
         camera.render(*projectile);
     }
 
@@ -104,6 +107,7 @@ void Game::render() {
 
 void Game::get_events() {
     events["next_level"] = new NextLevel();
+    events["spawn_sheep"] = new SpawnSheep();
 }
 
 
@@ -120,13 +124,15 @@ void Game::load_level() {
     AssetManager::get_available_items("items", graphics, *world);
 
     //asset for obj
-    for (auto& obj : world->game_objects) {
+    for (auto& obj: world->game_objects) {
         if (obj == world->player) continue;
         update_enemy(*obj);
         AssetManager::get_game_object_details(obj->obj_name + "-enemy", graphics, *obj);
     }
 
-    player->physics.position = {static_cast<float>(level.player_spawn_location.x), static_cast<float>(level.player_spawn_location.y)};
+    player->physics.position = {
+        static_cast<float>(level.player_spawn_location.x), static_cast<float>(level.player_spawn_location.y)
+    };
     player->fsm->current_state->on_enter(*world, *player);
     camera.set_location(player->physics.position);
     audio.play_sounds("background", true);
@@ -150,7 +156,7 @@ void Game::create_player() {
     //player input
     Keyboard_Input* input = new Keyboard_Input();
 
-    player = std::make_unique<GameObject>("player", fsm, input, Color {160, 0, 255, 255});
+    player = std::make_unique<GameObject>("player", fsm, input, Color{160, 0, 255, 255});
 }
 
 void Game::update_enemy(GameObject& obj) {
@@ -162,11 +168,10 @@ void Game::update_enemy(GameObject& obj) {
             {{StateType::Patrolling, Transition::Stop}, StateType::Standing}
         };
         states = {
-            {StateType::Standing, new Standing},
-            {StateType::Patrolling, new Patrolling}
+            {StateType::Standing, new Standing()},
+            {StateType::Patrolling, new Patrolling()}
         };
-    }
-    else if (obj.obj_name == "sheep"){
+    } else if (obj.obj_name == "sheep") {
         transitions = {
             {{StateType::Standing, Transition::Move}, StateType::Patrolling},
             {{StateType::Patrolling, Transition::Stop}, StateType::Standing}
@@ -175,8 +180,7 @@ void Game::update_enemy(GameObject& obj) {
             {StateType::Standing, new Standing},
             {StateType::Patrolling, new Patrolling}
         };
-    }
-    else {
+    } else {
         throw std::runtime_error("no enemy found to update");
     }
 

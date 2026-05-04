@@ -57,6 +57,27 @@
             ]
         },
         {
+            "enemy": "sheep",
+            "pos": [
+                9.0,
+                22.0
+            ]
+        },
+        {
+            "enemy": "sheep",
+            "pos": [
+                10.0,
+                16.0
+            ]
+        },
+        {
+            "enemy": "sheep",
+            "pos": [
+                10.0,
+                27.0
+            ]
+        },
+        {
             "enemy": "lion",
             "pos": [
                 10.0,
@@ -78,6 +99,34 @@
             ]
         },
         {
+            "enemy": "sheep",
+            "pos": [
+                11.0,
+                14.0
+            ]
+        },
+        {
+            "enemy": "sheep",
+            "pos": [
+                11.0,
+                20.0
+            ]
+        },
+        {
+            "enemy": "lion",
+            "pos": [
+                12.0,
+                16.0
+            ]
+        },
+        {
+            "enemy": "sheep",
+            "pos": [
+                12.0,
+                19.0
+            ]
+        },
+        {
             "enemy": "lion",
             "pos": [
                 13.0,
@@ -88,7 +137,21 @@
             "enemy": "lion",
             "pos": [
                 13.0,
+                14.0
+            ]
+        },
+        {
+            "enemy": "lion",
+            "pos": [
+                13.0,
                 21.0
+            ]
+        },
+        {
+            "enemy": "sheep",
+            "pos": [
+                13.0,
+                26.0
             ]
         },
         {
@@ -150,6 +213,13 @@
         {
             "enemy": "sheep",
             "pos": [
+                16.0,
+                13.0
+            ]
+        },
+        {
+            "enemy": "sheep",
+            "pos": [
                 17.0,
                 8.0
             ]
@@ -169,10 +239,24 @@
             ]
         },
         {
+            "enemy": "sheep",
+            "pos": [
+                17.0,
+                12.0
+            ]
+        },
+        {
             "enemy": "lion",
             "pos": [
                 18.0,
                 7.0
+            ]
+        },
+        {
+            "enemy": "sheep",
+            "pos": [
+                18.0,
+                21.0
             ]
         },
         {
@@ -187,6 +271,13 @@
             "pos": [
                 19.0,
                 17.0
+            ]
+        },
+        {
+            "enemy": "sheep",
+            "pos": [
+                19.0,
+                19.0
             ]
         },
         {
@@ -250,6 +341,18 @@
     "player_spawn_location": [
         4,
         4
+    ],
+    "sounds": [
+        {
+            "filename": "Level_2.mp3",
+            "loop_forever": true,
+            "name": "background"
+        },
+        {
+            "filename": "Stick_throw.mp3",
+            "loop_forever": false,
+            "name": "stick_throw"
+        }
     ],
     "tile_filenames": [
         "level_tiles.json"
@@ -1086,7 +1189,7 @@
                 3,
                 25
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:spawn"
         },
         {
             "pos": [
@@ -1436,7 +1539,7 @@
                 5,
                 13
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -1499,7 +1602,7 @@
                 5,
                 22
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -1660,7 +1763,7 @@
                 6,
                 14
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -1807,7 +1910,7 @@
                 7,
                 4
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -1835,14 +1938,14 @@
                 7,
                 8
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
                 7,
                 9
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:spawn"
         },
         {
             "pos": [
@@ -1905,7 +2008,7 @@
                 7,
                 18
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -1933,7 +2036,7 @@
                 7,
                 22
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -2185,7 +2288,7 @@
                 8,
                 27
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:spawn"
         },
         {
             "pos": [
@@ -2248,7 +2351,7 @@
                 9,
                 5
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -2633,7 +2736,7 @@
                 10,
                 29
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -2780,7 +2883,7 @@
                 11,
                 19
             ],
-            "tile": "level_tiles.json:horizontal"
+            "tile": "level_tiles.json:grass"
         },
         {
             "pos": [
@@ -2997,7 +3100,7 @@
                 12,
                 19
             ],
-            "tile": "level_tiles.json:horizontal"
+            "tile": "level_tiles.json:grass"
         },
         {
             "pos": [
@@ -3214,7 +3317,7 @@
                 13,
                 19
             ],
-            "tile": "level_tiles.json:horizontal"
+            "tile": "level_tiles.json:grass"
         },
         {
             "pos": [
@@ -3284,7 +3387,7 @@
                 13,
                 29
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -3319,7 +3422,7 @@
                 14,
                 3
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -3333,7 +3436,7 @@
                 14,
                 5
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -3431,7 +3534,7 @@
                 14,
                 19
             ],
-            "tile": "level_tiles.json:horizontal"
+            "tile": "level_tiles.json:grass"
         },
         {
             "pos": [
@@ -3452,7 +3555,7 @@
                 14,
                 22
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:bottom_left_corner"
         },
         {
             "pos": [
@@ -3648,28 +3751,28 @@
                 15,
                 19
             ],
-            "tile": "level_tiles.json:horizontal"
+            "tile": "level_tiles.json:bottom_left_corner"
         },
         {
             "pos": [
                 15,
                 20
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:vertical"
         },
         {
             "pos": [
                 15,
                 21
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:vertical"
         },
         {
             "pos": [
                 15,
                 22
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:top_right_corner"
         },
         {
             "pos": [
@@ -3872,7 +3975,7 @@
                 16,
                 20
             ],
-            "tile": "level_tiles.json:shrubs"
+            "tile": "level_tiles.json:portal"
         },
         {
             "pos": [
@@ -3893,7 +3996,7 @@
                 16,
                 23
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -4201,7 +4304,7 @@
                 18,
                 5
             ],
-            "tile": "level_tiles.json:tree"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -4348,7 +4451,7 @@
                 18,
                 26
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:spawn"
         },
         {
             "pos": [
@@ -4572,7 +4675,7 @@
                 19,
                 27
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -4614,7 +4717,7 @@
                 20,
                 2
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -4691,7 +4794,7 @@
                 20,
                 13
             ],
-            "tile": "level_tiles.json:tree"
+            "tile": "level_tiles.json:spawn"
         },
         {
             "pos": [
@@ -5237,7 +5340,7 @@
                 22,
                 29
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -5391,7 +5494,7 @@
                 23,
                 20
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -5419,7 +5522,7 @@
                 23,
                 24
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -5440,7 +5543,7 @@
                 23,
                 27
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -5503,7 +5606,7 @@
                 24,
                 5
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -5587,7 +5690,7 @@
                 24,
                 17
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -5699,7 +5802,7 @@
                 25,
                 2
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:spawn"
         },
         {
             "pos": [
@@ -6056,7 +6159,7 @@
                 26,
                 22
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -6147,7 +6250,7 @@
                 27,
                 4
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -6168,7 +6271,7 @@
                 27,
                 7
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -6217,7 +6320,7 @@
                 27,
                 14
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -6231,7 +6334,7 @@
                 27,
                 16
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -6518,7 +6621,7 @@
                 28,
                 26
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -6532,7 +6635,7 @@
                 28,
                 28
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:spawn"
         },
         {
             "pos": [
@@ -6721,7 +6824,7 @@
                 29,
                 24
             ],
-            "tile": "level_tiles.json:grass"
+            "tile": "level_tiles.json:shrubs"
         },
         {
             "pos": [
@@ -6981,12 +7084,6 @@
                 30
             ],
             "tile": "level_tiles.json:top_right_corner"
-        }
-    ],"sounds" : [
-        {
-            "name": "background",
-            "filename" : "Basic_Music.mp3",
-            "loop_forever": true
         }
     ],
     "width": 31

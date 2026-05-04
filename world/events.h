@@ -19,3 +19,8 @@ class NextLevel : public Event {
 public:
     void perform(World& world, GameObject& obj) override;
 };
+
+class SpawnSheep : public Event {
+public:
+    void perform(World& world, GameObject& obj) override;
+};

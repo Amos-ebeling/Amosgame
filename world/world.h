@@ -42,6 +42,9 @@ public:
     std::vector<Sheep*> sheeps;
     void touch_tiles(GameObject& obj);
 
+    double sheep_spawn_cooldown{5.0};
+    double sheep_spawn_elapsed{0.0};
+
     QuadTree quad_tree;
 
     //items

@@ -10,7 +10,6 @@
 class GameObject;
 class World;
 
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Sound, name, filename, loop_forever);
 
 // need to map Vec to JSON
 template <typename T>
@@ -23,6 +22,8 @@ void from_json(const nlohmann::json& j, Vec<T>& v) {
     v.x = j.at(0).get<T>();
     v.y = j.at(1).get<T>();
 }
+
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Sound, name, filename, loop_forever);
 
 // json for Level
 inline void to_json(nlohmann::json& j, const Level& level) {
